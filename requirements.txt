@@ -1,0 +1,9 @@
+numpy
+pillow
+opencv-python
+typer[all]
+rich
+matplotlib
+pydantic
+tensorflow-cpu>=2.12
+onnxruntime>=1.18

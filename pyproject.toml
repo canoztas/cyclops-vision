@@ -1,0 +1,53 @@
+ [project]
+name = "cyclops-vision"
+version = "0.1.0"
+description = "Cyclops Vision: modular adversarial-robustness fuzzer for vision models"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [ { name = "Cyclops Vision" } ]
+keywords = ["adversarial", "robustness", "vision", "fgsm", "pgd", "keras", "onnx"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "numpy",
+  "pillow",
+  "opencv-python",
+  "typer[all]",
+  "rich",
+  "matplotlib",
+  "pydantic",
+]
+
+[project.optional-dependencies]
+keras = ["tensorflow-cpu>=2.12"]
+onnx = ["onnxruntime>=1.18"]
+
+[project.scripts]
+cyclops = "cyclops.cli:app"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "UP", "B", "SIM", "C90"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true
+strict_optional = true
+
+[tool.setuptools]
+packages = ["cyclops", "cyclops.adapters", "cyclops.attacks", "cyclops.transforms", "cyclops.datasets", "cyclops.metrics", "cyclops.report", "cyclops.utils"]

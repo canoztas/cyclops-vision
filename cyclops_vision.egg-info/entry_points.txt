@@ -1,0 +1,2 @@
+[console_scripts]
+cyclops = cyclops.cli:app

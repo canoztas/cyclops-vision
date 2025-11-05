@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: cyclops-vision
+Version: 0.1.0
+Summary: Cyclops Vision: modular adversarial-robustness fuzzer for vision models
+Author: Cyclops Vision
+License: MIT
+Keywords: adversarial,robustness,vision,fgsm,pgd,keras,onnx
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pillow
+Requires-Dist: opencv-python
+Requires-Dist: typer[all]
+Requires-Dist: rich
+Requires-Dist: matplotlib
+Requires-Dist: pydantic
+Provides-Extra: keras
+Requires-Dist: tensorflow-cpu>=2.12; extra == "keras"
+Provides-Extra: onnx
+Requires-Dist: onnxruntime>=1.18; extra == "onnx"
+Dynamic: license-file
+
+# Cyclops Vision
+
+Modular adversarial-robustness fuzzer for vision models. MVP supports Keras (.h5) classifiers, FGSM/PGD attacks, simple transforms (resize/JPEG/blur), metrics (accuracy, ASR, risk score), and Markdown/HTML reporting.
+
+## Quickstart
+
+```bash
+pip install -r requirements.txt
+pip install -e .
+
+# Prepare data like examples/imagenet_like/{class0,class1}/image.png
+
+cyclops audit \
+  --model ./toy_model.h5 --framework keras --task classify \
+  --data ./examples/imagenet_like \
+  --attacks fgsm pgd \
+  --eps 2/255 4/255 \
+  --pgd-steps 10 \
+  --transforms "resize=224x224,jpeg=95,blur=0" "resize=224x224,jpeg=80,blur=1" \
+  --out ./out/mvp
+```
+
+## Architecture (MVP)
+
+- Adapters: `KerasH5Adapter`, `ONNXAdapter (stub)`
+- Attacks: `FGSM`, `PGD`
+- Transforms: `Resize`, `JPEG`, `Blur`, `Compose`
+- Dataset: folder classification loader
+- Metrics: accuracy, ASR, risk score
+- Reporter: Markdown, HTML
+- CLI: `cyclops audit`
+
+## Next steps
+
+- More attacks and EOT
+- PyTorch and ONNX gradients
+- Object detection adapters and metrics
+- Defenses (TTA, sanitize)
